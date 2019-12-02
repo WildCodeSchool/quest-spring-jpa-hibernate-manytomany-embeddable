@@ -36,6 +36,7 @@ public class CauldronController {
         categoryRepository.deleteAll();
         effectRepository.deleteAll();
         ingredientRepository.deleteAll();
+        potionIngredientRepository.deleteAll();
 
         Category category = categoryRepository.save(new Category("Random"));
         Potion potion = potionRepository.save(new Potion("A weird potion", 1, category));
