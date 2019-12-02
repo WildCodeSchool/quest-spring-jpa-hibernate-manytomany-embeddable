@@ -29,23 +29,6 @@
 <span th:text="|Id: ${potion.id}|">Id</span><br>
 <span th:text="|Name: ${potion.name}|">Name</span><br>
 <span th:text="|Power: ${potion.power}|">Power</span><br>
-<h3>Effects</h3>
-<table>
-    <thead>
-    <tr>
-        <th>Description</th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="effect : ${effects}">
-        <td th:text="${effect.description}">description</td>
-        <td>
-            <a th:href="@{/potion/effect/remove(idPotion=${potion.id},idEffect=${effect.id})}">delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
 <h3>Ingredients</h3>
 <table>
     <thead>

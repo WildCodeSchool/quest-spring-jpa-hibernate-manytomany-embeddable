@@ -17,12 +17,6 @@ public class CauldronController {
     PotionRepository potionRepository;
 
     @Autowired
-    CategoryRepository categoryRepository;
-
-    @Autowired
-    EffectRepository effectRepository;
-
-    @Autowired
     IngredientRepository ingredientRepository;
 
     @Autowired
@@ -33,21 +27,10 @@ public class CauldronController {
 
         // remove all categories and potions
         potionRepository.deleteAll();
-        categoryRepository.deleteAll();
-        effectRepository.deleteAll();
         ingredientRepository.deleteAll();
         potionIngredientRepository.deleteAll();
 
-        Category category = categoryRepository.save(new Category("Random"));
-        Potion potion = potionRepository.save(new Potion("A weird potion", 1, category));
-
-        // create to effect
-        Effect shrink = effectRepository.save(new Effect("You shrink to half your size for 24 hours"));
-        Effect green = effectRepository.save(new Effect("Your skin turns green"));
-
-        // add the effects to the potion
-        potion.getEffects().add(shrink);
-        potion.getEffects().add(green);
+        Potion potion = potionRepository.save(new Potion("A weird potion", 1));
 
         // create two ingredients
         Ingredient sphinx = ingredientRepository.save(new Ingredient("Sphinx's Blood"));
@@ -74,35 +57,10 @@ public class CauldronController {
             Potion potion = optionalPotion.get();
 
             out.addAttribute("potion", potion);
-            out.addAttribute("effects", potion.getEffects());
             out.addAttribute("potionIngredients", potion.getPotionIngredients());
         }
 
         return "potion";
-    }
-
-    @GetMapping("/potion/effect/remove")
-    public String removeEffectFromPotion(@RequestParam(required = false) Long idPotion,
-                                         @RequestParam(required = false) Long idEffect) {
-
-        if (idPotion == null || idEffect != null) {
-            Optional<Potion> optionalPotion = potionRepository.findById(idPotion);
-            Potion potion = null;
-            if (optionalPotion.isPresent()) {
-                potion = optionalPotion.get();
-            }
-            Optional<Effect> optionalEffect = effectRepository.findById(idEffect);
-            Effect effect = null;
-            if (optionalEffect.isPresent()) {
-                effect = optionalEffect.get();
-            }
-            if (potion != null && effect != null) {
-                potion.getEffects().remove(effect);
-                potionRepository.save(potion);
-            }
-        }
-
-        return "redirect:/potion?idPotion=" + idPotion;
     }
 
     @GetMapping("/potion/ingredient/remove")
